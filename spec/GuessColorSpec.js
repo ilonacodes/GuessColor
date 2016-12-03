@@ -1,10 +1,10 @@
 describe("guess color", function () {
     var storedMessage;
-    it("is unknown message when user enters unknown color ", function () {
-        window.alert = function (message) {
-          storedMessage = message;
-        };
+    window.alert = function (message) {
+        storedMessage = message;
+    };
 
+    it("is unknown message when user enters unknown color ", function () {
         var result = checkUserGuess("qwerty", 3, 0);
 
         expect(storedMessage).toEqual("I do not recognize that color!");
@@ -12,10 +12,6 @@ describe("guess color", function () {
     });
 
     it("is message when user enters color that alphabetically higher than computer's color", function () {
-        window.alert = function (message) {
-            storedMessage = message;
-        };
-
         var result = checkUserGuess("black", 2, 0);
 
         expect(storedMessage).toEqual("Your input alphabetically higher than mine!");
@@ -23,10 +19,6 @@ describe("guess color", function () {
     });
 
     it("is message when user enters color that alphabetically lower than computer's color", function () {
-        window.alert = function (message) {
-            storedMessage = message;
-        };
-
         var result = checkUserGuess("green", 4, 0);
 
         expect(storedMessage).toEqual("Your input alphabetically lower than mine!");
@@ -34,10 +26,6 @@ describe("guess color", function () {
     });
 
     it("is message when user enters color that alphabetically lower than computer's color", function () {
-        window.alert = function (message) {
-            storedMessage = message;
-        };
-
         var element = {style: {background: ""}};
         window.query = function (tagName) {
             return element;
@@ -50,4 +38,26 @@ describe("guess color", function () {
         expect(result).toEqual(false);
     });
 
+    it("stops asking for color when user has entered the right one", function () {
+        var storedPromptMessage;
+        var countPrompt = 0;
+        window.prompt = function (message) {
+            storedPromptMessage = message;
+            var userInput = colors[countPrompt];
+            countPrompt++;
+            return userInput;
+        };
+
+        window.randomColor = function () {
+            return 3;
+        };
+
+        game();
+
+        expect(storedPromptMessage).toEqual("I am thinking of one of colors\n\n" +
+            "black,blue,green,red,white,yellow\n\n" +
+            "What color am I thinking of?");
+        expect(countPrompt).toEqual(4);
+        expect(storedMessage).toEqual("You are right! You took " + 4 + " guesses!");
+    });
 });

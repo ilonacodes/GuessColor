@@ -1,11 +1,15 @@
 var colors = ["red", "green", "blue", "white", "black", "yellow"];
 
+function randomColor() {
+    return Math.floor(Math.random() * colors.length);
+}
+
 function game() {
     var targetColor;
     var userInput;
     var countIteration = 0;
     colors.sort();
-    targetColor = Math.floor(Math.random() * colors.length);
+    targetColor = randomColor();
     do {
         userInput = prompt("I am thinking of one of colors\n\n" + colors + "\n\nWhat color am I thinking of?");
         countIteration++;
